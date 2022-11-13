@@ -4,6 +4,7 @@ rule = GroupByKeyRewrite
 package fix
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
 
 object GroupByKeyRewrite {
   def isSource1(sparkSession: SparkSession): Unit = {
@@ -21,5 +22,12 @@ object GroupByKeyRewrite {
         .groupByKey(l => l.substring(0, 3))
         .count()
         .select($"value", $"count(1)")
+
+    val ds3 =
+      List("Paerson 1", "Person 2", "User 1", "User 2", "test", "gggg")
+        .toDS()
+        .groupByKey(l => l.substring(0, 3))
+        .count()
+        .select(col("value"), col("count(1)"))
   }
 }

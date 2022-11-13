@@ -82,6 +82,45 @@ class GroupByKeyRewrite extends SemanticRule("GroupByKeyRewrite") {
               .equals(countName) && "select".equals(selectName) && "$"
               .equals(cName) && "value".equals(colOldName) =>
           Patch.replaceTree(colOld, colNameNew)
+        case Term.Apply(
+              Term.Select(
+                Term.Apply(
+                  Term.Select(
+                    Term.Apply(
+                      Term.Select(
+                        Term.Apply(
+                          Term.Select(
+                            _,
+                            _ @Term.Name(toDSName)
+                          ),
+                          _
+                        ),
+                        _ @Term.Name(groupByKeyName)
+                      ),
+                      _
+                    ),
+                    _ @Term.Name(countName)
+                  ),
+                  _
+                ),
+                _ @Term.Name(selectName)
+              ),
+              List(
+                Term.Apply(
+                  _ @Term.Name(colName),
+                  List(oldNameColumn @ Lit.String(valueName))
+                ),
+                _
+              )
+            )
+            if funcToDS.equals(toDSName) && grpByKey.equals(
+              groupByKeyName
+            ) && "count".equals(
+              countName
+            ) && "select".equals(selectName) && "col"
+              .equals(colName) && colNameOld.equals(valueName) =>
+          Patch.replaceTree(oldNameColumn, "\"".concat(colNameNew).concat("\""))
+
       }.asPatch
     }
 
