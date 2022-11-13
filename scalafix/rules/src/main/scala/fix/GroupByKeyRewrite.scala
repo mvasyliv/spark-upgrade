@@ -198,11 +198,8 @@ class GroupByKeyRewrite extends SemanticRule("GroupByKeyRewrite") {
               countName
             ) && "withColumn".equals(withColumnName) && "col".equals(
               colName
-            ) && "value".equals(valueName) => {
-          println("~~~~~> test")
-          println(s"~~~~~> withColumnName = $withColumnName")
+            ) && "value".equals(valueName) =>
           Patch.replaceTree(oldNameColumn, "\"".concat(colNameNew).concat("\""))
-        }
       }.asPatch
     }
 
