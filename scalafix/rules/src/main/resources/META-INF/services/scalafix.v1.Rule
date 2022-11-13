@@ -7,4 +7,8 @@ fix.OnFailureFix
 fix.ExecutorPluginWarn
 fix.UnionRewrite
 fix.GroupByKeyWarn
+fix.MetadataWarn
+fix.GroupByKeyRewrite
+
+
 
