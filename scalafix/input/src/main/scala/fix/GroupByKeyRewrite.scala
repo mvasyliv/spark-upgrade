@@ -43,5 +43,12 @@ object GroupByKeyRewrite {
         .groupByKey(l => l.substring(0, 3))
         .count()
         .withColumn("newNameCol", upper(col("value")))
+
+    val ds6 =
+      List("Paerson 1", "Person 2", "User 1", "User 2", "test", "gggg")
+        .toDS()
+        .groupByKey(l => l.substring(0, 3))
+        .count()
+        .withColumn("value", upper(col("value")))
   }
 }
