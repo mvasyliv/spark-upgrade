@@ -13,37 +13,78 @@ class GroupByKeyRewrite extends SemanticRule("GroupByKeyRewrite") {
     val colNameOld = "value"
     val colNameNew = "key"
 
-    doc.tree.collect {
-      case Term.Apply(
-            Term.Select(
-              Term.Apply(
-                Term.Select(
-                  Term.Apply(
-                    Term.Select(
-                      Term.Apply(
-                        Term.Select(
-                          _,
-                          _ @Term.Name(fName)
+    def matchOnTree(t: Tree): Patch = {
+      t.collect {
+        case Term.Apply(
+              Term.Select(
+                Term.Apply(
+                  Term.Select(
+                    Term.Apply(
+                      Term.Select(
+                        Term.Apply(
+                          Term.Select(
+                            _,
+                            _ @Term.Name(fName)
+                          ),
+                          _
                         ),
-                        _
+                        _ @Term.Name(grpByKeyName)
                       ),
-                      _ @Term.Name(grpByKeyName)
+                      _
                     ),
-                    _
+                    _ @Term.Name(oprName)
                   ),
-                  _ @Term.Name(oprName)
+                  _
+                ),
+                _ @Term.Name(oprColumnName)
+              ),
+              List(oldColName @ Lit.String(valueOld), _)
+            )
+            if grpByKey
+              .equals(grpByKeyName) && funcToDS.equals(fName) && agrFunCount
+              .equals(oprName) && oprCol.equals(oprColumnName) && colNameOld
+              .equals(valueOld) =>
+          Patch.replaceTree(oldColName, "\"".concat(colNameNew).concat("\""))
+        case Term.Apply(
+              Term.Select(
+                Term.Apply(
+                  Term.Select(
+                    Term.Apply(
+                      Term.Select(
+                        Term.Apply(
+                          Term.Select(
+                            _,
+                            _ @Term.Name(toDSName)
+                          ),
+                          _
+                        ),
+                        _ @Term.Name(grpByKeyName)
+                      ),
+                      _
+                    ),
+                    _ @Term.Name(countName)
+                  ),
+                  _
+                ),
+                _ @Term.Name(selectName)
+              ),
+              List(
+                Term.Interpolate(
+                  _ @Term.Name(cName),
+                  List(colOld @ Lit.String(colOldName)),
+                  _
                 ),
                 _
-              ),
-              _ @Term.Name(oprColumnName)
-            ),
-            List(oldColName @ Lit.String(valueOld), _)
-          )
-          if grpByKey
-            .equals(grpByKeyName) && funcToDS.equals(fName) && agrFunCount
-            .equals(oprName) && oprCol.equals(oprColumnName) && colNameOld
-            .equals(valueOld) =>
-        Patch.replaceTree(oldColName, "\"".concat(colNameNew).concat("\""))
-    }.asPatch
+              )
+            )
+            if grpByKey
+              .equals(grpByKeyName) && funcToDS.equals(toDSName) && agrFunCount
+              .equals(countName) && "select".equals(selectName) && "$"
+              .equals(cName) && "value".equals(colOldName) =>
+          Patch.replaceTree(colOld, colNameNew)
+      }.asPatch
+    }
+
+    matchOnTree(doc.tree)
   }
 }
