@@ -26,5 +26,12 @@ object GroupByKeyRewrite {
         .groupByKey(l => l.substring(0, 3))
         .count()
         .select(col("key"), col("count(1)"))
+
+    val ds4 =
+      List("Paerson 1", "Person 2", "User 1", "User 2", "test", "gggg")
+        .toDS()
+        .groupByKey(l => l.substring(0, 3))
+        .count()
+        .select('key, 'count (1))
   }
 }
