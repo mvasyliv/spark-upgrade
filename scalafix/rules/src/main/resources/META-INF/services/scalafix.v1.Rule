@@ -9,3 +9,4 @@ fix.UnionRewrite
 fix.GroupByKeyUpgrade_V1
 fix.RuleQuasiquotes
 fix.UnionRewriteQQ
+fix.GroupByKeyRenameColumnQQ
