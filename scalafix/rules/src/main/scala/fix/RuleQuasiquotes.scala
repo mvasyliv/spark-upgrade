@@ -8,8 +8,16 @@ class RuleQuasiquotes extends SemanticRule("RuleQuasiquotes") {
     """Quasiquotes in Scalafix. Renaming column "value" with "key" when have Dataset.groupByKey(...).count()"""
   override val isRewrite = true
   override def fix(implicit doc: SemanticDocument): Patch = {
-    val gbkFunMatch = SymbolMatcher.normalized("groupByKey")
-//    d @ gbkFunMatch(f)
+//    println("~~~~~>")
+//    println("Tree.syntax: " + doc.tree.syntax)
+//    println("Tree.structure: " + doc.tree.structure)
+//    println("Tree.structureLabeled: " + doc.tree.structureLabeled)
+//    println("<~~~~~")
+
+    val datasetMatcher =
+      SymbolMatcher.normalized(
+        "org.apache.spark.sql.{DataFrame, Dataset, SparkSession}"
+      )
 
     def matchOnTerm(t: Term): Patch = {
       t match {
