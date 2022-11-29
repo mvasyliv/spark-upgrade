@@ -48,7 +48,7 @@ class GroupByKeyUpgrade_V1 extends SemanticRule("GroupByKeyUpgrade_V1") {
 
   override def fix(implicit doc: SemanticDocument): Patch = {
     doc.tree.collect { case tt @ _ =>
-      println(s"~~~~~> tt = $tt")
+//      println(s"~~~~~> tt = $tt")
       Patch.empty
     }.asPatch
   }

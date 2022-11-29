@@ -11,3 +11,4 @@ fix.RuleQuasiquotes
 fix.UnionRewriteQQ
 fix.GroupByKeyRenameColumnQQ
 fix.MetadataWarnQQ
+fix.GroupByKeyWarnQQ
