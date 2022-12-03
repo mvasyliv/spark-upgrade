@@ -12,3 +12,5 @@ fix.UnionRewriteQQ
 fix.GroupByKeyRenameColumnQQ
 fix.MetadataWarnQQ
 fix.GroupByKeyWarnQQ
+fix.UnionRewriteQQ_2
+fix.UnionRewriteWithCheckType

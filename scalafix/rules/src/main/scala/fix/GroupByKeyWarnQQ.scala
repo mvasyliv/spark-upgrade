@@ -22,11 +22,11 @@ class GroupByKeyWarnQQ extends SemanticRule("GroupByKeyWarnQQ") {
     SymbolMatcher.normalized("groupByKey")
 //  org.apache.spark.sql.Dataset.
   override def fix(implicit doc: SemanticDocument): Patch = {
-    println(s"~~~~~>")
-    println("Tree.syntax: " + doc.tree.syntax)
-    println("Tree.structure: " + doc.tree.structure)
-    println("Tree.structureLabeled: " + doc.tree.structureLabeled)
-    println(s"<~~~~~")
+//    println(s"~~~~~>")
+//    println("Tree.syntax: " + doc.tree.syntax)
+//    println("Tree.structure: " + doc.tree.structure)
+//    println("Tree.structureLabeled: " + doc.tree.structureLabeled)
+//    println(s"<~~~~~")
     def isDSGroupByKeyCount(t: Tree): Boolean = {
       val isToDS = t.collect { case q"""toDS""" => true }
       val isGroupByKey = t.collect { case q"""groupByKey""" => true }
@@ -76,7 +76,8 @@ class GroupByKeyWarnQQ extends SemanticRule("GroupByKeyWarnQQ") {
       }
     }
 
-    matchOnTree(doc.tree)
+//    matchOnTree(doc.tree)
+    Patch.empty
   }
 
 }

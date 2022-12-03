@@ -17,7 +17,7 @@ class GroupByKeyWarnQQ {
       "Test",
       "Test Test"
     ).toDS()
-      .groupByKey(l => l.substring(0, 3)) // assert: GroupByKeyWarnQQ
+      .groupByKey(l => l.substring(0, 3))
       .count()
   }
 }
