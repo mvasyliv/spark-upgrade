@@ -12,6 +12,12 @@ class GroupByKeyRenameColumnQQ
 
   override def fix(implicit doc: SemanticDocument): Patch = {
 
+    println(s"~~~~~> GroupByKeyRenameColumnQQ")
+    println("Tree.syntax: " + doc.tree.syntax)
+    println("Tree.structure: " + doc.tree.structure)
+    println("Tree.structureLabeled: " + doc.tree.structureLabeled)
+    println(s"<~~~~~ GroupByKeyRenameColumnQQ")
+
     def isGroupByKeyAndCount(t: Term): Boolean = {
       val isGroupByKey = t.collect { case q"""groupByKey""" => true }
       val isCount = t.collect { case q"""count""" => true }
@@ -38,6 +44,8 @@ class GroupByKeyRenameColumnQQ
       // TODO: Add checking only for Dataset
       t match {
         case _ @Term.Apply(tr, params) =>
+          println(s"~~~~~> tr = $tr")
+          println(s"~~~~~> tr signature = ${tr.symbol.info.get.signature}")
           if (isGroupByKeyAndCount(tr)) params.map(matchOnTerm).asPatch
           else Patch.empty
         case elem @ _ =>

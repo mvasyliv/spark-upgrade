@@ -11,12 +11,6 @@ class UnionRewriteWithCheckType
 
   override def fix(implicit doc: SemanticDocument): Patch = {
 
-    println(s"~~~~~> UnionRewriteWithCheckType")
-    println("Tree.syntax: " + doc.tree.syntax)
-    println("Tree.structure: " + doc.tree.structure)
-    println("Tree.structureLabeled: " + doc.tree.structureLabeled)
-    println(s"<~~~~~ UnionRewriteWithCheckType")
-
     def isDatasetDataFrame(
         tp: String,
         q: Term,

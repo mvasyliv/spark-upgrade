@@ -7,6 +7,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 object GroupByKeyRenameColumnQQ {
+  case class City(name: String, population: Int)
   def inSource(spark: SparkSession): Unit = {
     import spark.implicits._
 
@@ -58,5 +59,15 @@ object GroupByKeyRenameColumnQQ {
 
     val s = "value"
     val value = 1
+  }
+  def inSource2(spark: SparkSession): Unit = {
+    import spark.implicits._
+    val df = Seq(
+      City("Kyev", 9999),
+      City("Seatle", 67676),
+      City("Toronto", 987678)
+    ).toDF()
+    val res = df.groupBy(col("name")).count
+    val ds = df.as[City].groupBy(col("name")).count
   }
 }
